@@ -9,7 +9,37 @@ var persons = new List<Person>()
         FirstName: "Anonim",
         Phones: Array.Empty<string>())
 };
+Console.WriteLine("Исходные данные");
+foreach (var (first, last, phones) in persons)
+{
+    Console.WriteLine($"{last} {first}:");
+    foreach (var phone in phones)
+    {
+        Console.Write($"{phone} ");
+    }
+    Console.WriteLine();
+}
 
+Console.WriteLine();
+Console.WriteLine("////////////////////");
+Console.WriteLine();
+
+Console.WriteLine("фильтрация элементов (простая)");
+
+var filteredPersons = from person2 in persons
+    where person2.LastName == "Anonimus"
+    select person2;
+foreach (var person in filteredPersons)
+{
+    Console.WriteLine($"{person.LastName} {person.FirstName}");
+}
+
+Console.WriteLine();
+Console.WriteLine("////////////////////");
+Console.WriteLine();
+
+
+Console.WriteLine("фильтрация элементов (с созданием анонимного класса)");
 var personsWithNotPhone = from person in persons
     where person.Phones.Count() == 0
     select new {FullName = $"{person.LastName} {person.FirstName}"};
@@ -17,6 +47,12 @@ foreach (var item in personsWithNotPhone)
 {
     Console.WriteLine(item.FullName);
 }
+
+Console.WriteLine();
+Console.WriteLine("////////////////////");
+Console.WriteLine();
+
+Console.WriteLine("фильтрация элементов (с созданием кортежа и использования внутризапросовой переменной и двух источников данных)");
 
 var result = from person1 in persons
     from phone in person1.Phones
@@ -27,5 +63,9 @@ foreach (var (lastName, phone) in result)
 {
     Console.WriteLine($"{lastName} -> {phone}");
 }
+
+Console.WriteLine();
+Console.WriteLine("////////////////////");
+Console.WriteLine();
 
 return;

@@ -24,7 +24,7 @@ Console.WriteLine();
 Console.WriteLine("////////////////////");
 Console.WriteLine();
 
-Console.WriteLine("фильтрация элементов (простая)");
+Console.WriteLine("фильтрация элементов (простая, classic)");
 
 var filteredPersons = from person2 in persons
     where person2.LastName == "Anonimus"
@@ -38,8 +38,20 @@ Console.WriteLine();
 Console.WriteLine("////////////////////");
 Console.WriteLine();
 
+Console.WriteLine("фильтрация элементов (простая, Fluent API)");
 
-Console.WriteLine("фильтрация элементов (с созданием анонимного класса)");
+var filteredPersons1 = persons.Where(p => p.LastName == "Anonimus");
+foreach (var person in filteredPersons1)
+{
+    Console.WriteLine($"{person.LastName} {person.FirstName}");
+}
+
+Console.WriteLine();
+Console.WriteLine("////////////////////");
+Console.WriteLine();
+
+
+Console.WriteLine("фильтрация элементов (с созданием анонимного класса, classic)");
 var personsWithNotPhone = from person in persons
     where person.Phones.Count() == 0
     select new {FullName = $"{person.LastName} {person.FirstName}"};
@@ -52,7 +64,20 @@ Console.WriteLine();
 Console.WriteLine("////////////////////");
 Console.WriteLine();
 
-Console.WriteLine("фильтрация элементов (с созданием кортежа и использования внутризапросовой переменной и двух источников данных)");
+Console.WriteLine("фильтрация элементов (с созданием анонимного класса, Fluent API)");
+var personsWithNotPhone1 = persons
+    .Where(p => p.Phones.Count() == 0)
+    .Select(p => new {FullName = $"{p.LastName} {p.FirstName}"});
+foreach (var item in personsWithNotPhone1)
+{
+    Console.WriteLine(item.FullName);
+}
+
+Console.WriteLine();
+Console.WriteLine("////////////////////");
+Console.WriteLine();
+
+Console.WriteLine("фильтрация элементов (с созданием кортежа и использования внутризапросовой переменной и двух источников данных, classic)");
 
 var result = from person1 in persons
     from phone in person1.Phones
@@ -62,6 +87,26 @@ var result = from person1 in persons
 foreach (var (lastName, phone) in result)
 {
     Console.WriteLine($"{lastName} -> {phone}");
+}
+
+Console.WriteLine();
+Console.WriteLine("////////////////////");
+Console.WriteLine();
+
+Console.WriteLine("фильтрация элементов (с созданием кортежа и использования внутризапросовой переменной и двух источников данных, Fluent API)");
+
+var number1 = "904";
+var result1 = persons
+    .Where(p => p.Phones.Contains(number1))
+    .Select(p => new
+    {
+        LastName = p.LastName, 
+        Phone = p.Phones.First(ph => ph.Contains(number1))
+    });
+    
+foreach (var item in result1)
+{
+    Console.WriteLine($"{item.LastName} -> {item.Phone}");
 }
 
 Console.WriteLine();
